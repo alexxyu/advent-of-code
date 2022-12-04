@@ -1,6 +1,6 @@
 import argparse
 from collections import *
-from functools import cache
+from functools import lru_cache
 from heapq import heappush, heappop, heappushpop, heapify, heapreplace
 from itertools import *
 from math import *
