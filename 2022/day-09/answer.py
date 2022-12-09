@@ -7,6 +7,7 @@ DIRECTIONS = {
     'D': (0, 1),
 }
 
+
 def debug(pos):
     min_x = min(pos, key=lambda x: x[0])[0]
     min_y = min(pos, key=lambda x: x[1])[1]
@@ -23,8 +24,10 @@ def debug(pos):
     for row in grid:
         print(''.join(row))
 
+
 def is_adjacent(ax, ay, bx, by):
     return abs(ax - bx) <= 1 and abs(ay - by) <= 1
+
 
 def part_a(filename):
     print('Trying part a...')
@@ -61,6 +64,7 @@ def part_a(filename):
             t = (tx, ty)
 
         print(len(positions))
+
 
 def part_b(filename):
     print('Trying part b...')
@@ -105,9 +109,11 @@ def part_b(filename):
 
         print(len(positions))
 
+
 parser = argparse.ArgumentParser()
 parser.add_argument('filename', help='the input file')
-parser.add_argument('-b', '--part_b', action='store_true', help='whether to try part B (default: try part A)')
+parser.add_argument('-b', '--part_b', action='store_true',
+                    help='whether to try part B (default: try part A)')
 args = parser.parse_args()
 
 filename = args.filename

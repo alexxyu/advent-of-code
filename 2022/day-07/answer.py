@@ -1,13 +1,14 @@
 import argparse
 from collections import *
 
+
 def part_a(filename):
     print('Trying part a...')
     with open(filename) as f:
         lines = f.read().splitlines()
 
         curr_dir = '/'
-        dir_to_parent = { '/': '/' }
+        dir_to_parent = {'/': '/'}
         dir_sizes = defaultdict(int)
         i = 0
         while i < len(lines):
@@ -38,13 +39,14 @@ def part_a(filename):
                     i += 1
         print(sum([v for v in dir_sizes.values() if v <= 100000]))
 
+
 def part_b(filename):
     print('Trying part b...')
     with open(filename) as f:
         lines = f.read().splitlines()
 
         curr_dir = '/'
-        dir_to_parent = { '/': '/' }
+        dir_to_parent = {'/': '/'}
         dir_sizes = defaultdict(int)
         i = 0
         while i < len(lines):
@@ -77,9 +79,11 @@ def part_b(filename):
         need_space = 3e7 - free_space
         print(next(x for x in sorted(dir_sizes.values()) if x >= need_space))
 
+
 parser = argparse.ArgumentParser()
 parser.add_argument('filename', help='the input file')
-parser.add_argument('-b', '--part_b', action='store_true', help='whether to try part B (default: try part A)')
+parser.add_argument('-b', '--part_b', action='store_true',
+                    help='whether to try part B (default: try part A)')
 args = parser.parse_args()
 
 filename = args.filename

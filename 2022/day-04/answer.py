@@ -1,5 +1,6 @@
 import argparse
 
+
 def part_a(filename):
     print('Trying part a...')
     with open(filename) as f:
@@ -13,6 +14,7 @@ def part_a(filename):
             if a_s <= b_s and a_e >= b_e or b_s <= a_s and b_e >= a_e:
                 c += 1
         print(c)
+
 
 def part_b(filename):
     print('Trying part b...')
@@ -31,9 +33,11 @@ def part_b(filename):
                 c += 1
         print(c)
 
+
 parser = argparse.ArgumentParser()
 parser.add_argument('filename', help='the input file')
-parser.add_argument('-b', '--part_b', action='store_true', help='whether to try part B (default: try part A)')
+parser.add_argument('-b', '--part_b', action='store_true',
+                    help='whether to try part B (default: try part A)')
 args = parser.parse_args()
 
 filename = args.filename

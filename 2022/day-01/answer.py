@@ -1,5 +1,6 @@
 import argparse
 
+
 def part_a(filename):
     print('Trying part a...')
     with open(filename) as f:
@@ -15,6 +16,7 @@ def part_a(filename):
             max_calories = max(max_calories, curr_calories)
 
         print(max_calories)
+
 
 def part_b(filename):
     print('Trying part b...')
@@ -33,9 +35,11 @@ def part_b(filename):
 
         print(sum(sorted(calories)[-3:]))
 
+
 parser = argparse.ArgumentParser()
 parser.add_argument('filename', help='the input file')
-parser.add_argument('-b', '--part_b', action='store_true', help='whether to try part B (default: try part A)')
+parser.add_argument('-b', '--part_b', action='store_true',
+                    help='whether to try part B (default: try part A)')
 args = parser.parse_args()
 
 filename = args.filename

@@ -1,5 +1,6 @@
 import argparse
 
+
 def find_marker(msg, n):
     k = list(msg[:n])
 
@@ -14,11 +15,13 @@ def find_marker(msg, n):
 
     return None
 
+
 def part_a(filename):
     print('Trying part a...')
     with open(filename) as f:
         lines = f.read().splitlines()
         print(find_marker(lines[0], 4))
+
 
 def part_b(filename):
     print('Trying part b...')
@@ -26,9 +29,11 @@ def part_b(filename):
         lines = f.read().splitlines()
         print(find_marker(lines[0], 14))
 
+
 parser = argparse.ArgumentParser()
 parser.add_argument('filename', help='the input file')
-parser.add_argument('-b', '--part_b', action='store_true', help='whether to try part B (default: try part A)')
+parser.add_argument('-b', '--part_b', action='store_true',
+                    help='whether to try part B (default: try part A)')
 args = parser.parse_args()
 
 filename = args.filename

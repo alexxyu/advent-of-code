@@ -1,9 +1,5 @@
 import argparse
-from collections import *
-from functools import lru_cache
-from heapq import heappush, heappop, heappushpop, heapify, heapreplace
-from itertools import *
-from math import *
+
 
 def part_a(filename):
     print('Trying part a...')
@@ -42,12 +38,13 @@ def part_a(filename):
         for line in lines[i+1:]:
             _, n, _, a, _, b = line.split()
             n, a, b = map(int, [n, a, b])
-            
+
             for _ in range(n):
                 columns[b-1].append(columns[a-1][-1])
                 columns[a-1].pop()
 
         print(''.join([c[-1] for c in columns]))
+
 
 def part_b(filename):
     print('Trying part b...')
@@ -86,16 +83,18 @@ def part_b(filename):
         for line in lines[i+1:]:
             _, n, _, a, _, b = line.split()
             n, a, b = map(int, [n, a, b])
-            
+
             columns[b-1].extend(columns[a-1][-n:])
             for _ in range(n):
                 columns[a-1].pop()
 
         print(''.join([c[-1] for c in columns]))
 
+
 parser = argparse.ArgumentParser()
 parser.add_argument('filename', help='the input file')
-parser.add_argument('-b', '--part_b', action='store_true', help='whether to try part B (default: try part A)')
+parser.add_argument('-b', '--part_b', action='store_true',
+                    help='whether to try part B (default: try part A)')
 args = parser.parse_args()
 
 filename = args.filename

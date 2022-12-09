@@ -1,9 +1,5 @@
 import argparse
-from collections import *
-from functools import lru_cache
-from heapq import heappush, heappop, heappushpop, heapify, heapreplace
-from itertools import *
-from math import *
+
 
 def part_a(filename):
     print('Trying part a...')
@@ -12,7 +8,7 @@ def part_a(filename):
         grid = []
         for line in lines:
             grid.append(list(map(int, line)))
-        
+
         c = 0
         for i in range(len(grid)):
             for j in range(len(grid[i])):
@@ -21,9 +17,10 @@ def part_a(filename):
                 if (all(grid[ii][j] >= h for ii in range(0, i-1)) or
                     all(grid[ii][j] >= h for ii in range(i+1, len(grid))) or
                     all(grid[i][jj] >= h for jj in range(0, j-1)) or
-                    all(grid[i][jj] >= h for jj in range(j+1, len(grid[i])))):
+                        all(grid[i][jj] >= h for jj in range(j+1, len(grid[i])))):
                     c += 1
         print(c)
+
 
 def part_b(filename):
     print('Trying part b...')
@@ -32,7 +29,7 @@ def part_b(filename):
         grid = []
         for line in lines:
             grid.append(list(map(int, line)))
-        
+
         c = 1
         for i in range(len(grid)):
             for j in range(len(grid[i])):
@@ -69,9 +66,11 @@ def part_b(filename):
                 c = max(c, k)
         print(c)
 
+
 parser = argparse.ArgumentParser()
 parser.add_argument('filename', help='the input file')
-parser.add_argument('-b', '--part_b', action='store_true', help='whether to try part B (default: try part A)')
+parser.add_argument('-b', '--part_b', action='store_true',
+                    help='whether to try part B (default: try part A)')
 args = parser.parse_args()
 
 filename = args.filename
