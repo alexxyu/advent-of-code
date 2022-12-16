@@ -66,46 +66,51 @@ def part_b(filename):
         def is_set(n, i):
             return (n >> i) & 1 == 1
 
+        n_nonzero_rates = len([r for r in valve_rates.values() if r > 0])
+        def is_full(n):
+            return n.bit_count() == n_nonzero_rates
+
         max_p = 0
         queue = [('AA', 'AA', 0, 0)]
+        mem = dict()
         for t in range(25, -1, -1):
-            N = len(queue)
-            mem = dict()
-            for _ in range(N):
-                (v, w, p, s) = queue.pop(0)
+            next_queue = []
+            for (v, w, p, s) in queue:
+                v, w = min(v, w), max(v, w)
                 max_p = max(max_p, p)
+
+                if mem.get((v, w, s), -1) >= p:
+                    continue
+
+                mem[(v, w, s)] = p
+
+                if is_full(s):
+                    continue
 
                 # Case 1: Elephant and I both open our valves.
                 if v != w and not is_set(s, valve_to_idx[v]) and not is_set(s, valve_to_idx[w]) and valve_rates[v] > 0 and valve_rates[w] > 0:
                     p_t = p + (valve_rates[v] * t) + (valve_rates[w] * t)
-                    if mem.get((v, w, s), -1) < p:
-                        queue.append((v, w, p_t, set_bitmask(set_bitmask(s, valve_to_idx[v]), valve_to_idx[w])))
-                        mem[(v, w, s)] = p
+                    next_queue.append((v, w, p_t, set_bitmask(set_bitmask(s, valve_to_idx[v]), valve_to_idx[w])))
 
                 # Case 2: I open my valve; Elephant moves.
                 if not is_set(s, valve_to_idx[v]) and valve_rates[v] > 0:
                     p_t = p + (valve_rates[v] * t)
                     for w_n in tunnels[w]:
-                        if mem.get((v, w_n, s), -1) < p:
-                            queue.append((v, w_n, p_t, set_bitmask(s, valve_to_idx[v])))
-                            mem[(v, w_n, s)] = p
+                        next_queue.append((v, w_n, p_t, set_bitmask(s, valve_to_idx[v])))
 
                 # Case 3: Elephant opens its valve; I move.
                 if not is_set(s, valve_to_idx[w]) and valve_rates[w] > 0:
                     p_t = p + (valve_rates[w] * t)
                     for v_n in tunnels[v]:
-                        if mem.get((v_n, w, s), -1) < p:
-                            queue.append((v_n, w, p_t, set_bitmask(s, valve_to_idx[w])))
-                            mem[(v_n, w, s)] = p
+                        next_queue.append((v_n, w, p_t, set_bitmask(s, valve_to_idx[w])))
 
                 # Case 4: Elephant and I both move.
                 for v_n in tunnels[v]:
                     for w_n in tunnels[w]:
-                        if mem.get((v_n, w_n, s), -1) < p:
-                            queue.append((v_n, w_n, p, s))
-                            mem[((v_n, w_n, s))] = p
+                        next_queue.append((v_n, w_n, p, s))
 
-            print(t, N, max_p)
+            print(t, len(queue), max_p)
+            queue = next_queue
 
         print(max_p)
 
