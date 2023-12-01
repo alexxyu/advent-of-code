@@ -1,5 +1,6 @@
 #!/bin/zsh
-day=$(date +%d)
+real_day=$(date +%d)
+day=$(( (real_day % 30) + 1 ))
 if [ $# -gt 1 ]; then
     echo "Expected exactly zero or one argument"
     exit 1
