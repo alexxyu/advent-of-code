@@ -1,14 +1,15 @@
 import argparse
+import heapq
+import itertools
+import math
+import re
 from collections import *
 from copy import deepcopy
 from dataclasses import dataclass
 from enum import Enum
 from functools import cmp_to_key, lru_cache, reduce
-from heapq import *
-from itertools import *
-from math import *
-from re import findall, split
 from typing import *
+import utils
 
 
 def part_a(filename):
@@ -26,10 +27,14 @@ def part_b(filename):
 
 
 parser = argparse.ArgumentParser()
-parser.add_argument('filename', help='the input file')
-parser.add_argument('-b', '--part_b', action='store_true',
-                    help='whether to try part B (default: try part A)')
+parser.add_argument('filename', help='the input file, will default to actual AoC input if omitted', type=str, nargs='?', default=None)
+parser.add_argument('--skip-b', help='skip running part b', action='store_true')
 args = parser.parse_args()
 
 filename = args.filename
-(part_b if args.part_b or filename[0] == 'b' else part_a)(filename)
+if not args.filename:
+    filename = utils.get_real_input({{aoc_day}})
+
+part_a(filename)
+if not args.skip_b:
+    part_b(filename)
