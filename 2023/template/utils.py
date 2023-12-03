@@ -51,7 +51,7 @@ def get_real_input(day, year=2023):
     response = requests.get(url, headers=headers)
 
     if response.status_code != 200:
-        raise ValueError("Got non-ok status code: {response.status_code}.")
+        raise ValueError(f"Got non-ok response from Advent of Code: {response.status_code} {response.reason}.")
 
     os.makedirs(os.path.dirname(filepath), exist_ok=True)
     with open(filepath, 'w') as f:
