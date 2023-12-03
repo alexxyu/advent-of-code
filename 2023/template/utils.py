@@ -3,13 +3,18 @@ import requests
 import subprocess
 
 
+def iter_grid_with_pos(grid):
+    for i, r in enumerate(grid):
+        for j, c in enumerate(r):
+            yield (i, j), c
+
+
 def iter_grid(grid):
-    for r in grid:
-        for c in r:
-            yield c
+    for _, g in iter_grid_with_pos(grid):
+        yield g
 
 
-def iter_grid_neighbors(grid, r, c):
+def iter_grid_neighbors_with_pos(grid, r, c):
     for dr in [-1, 0, 1]:
         for dc in [-1, 0, 1]:
             if dr == 0 and dc == 0:
@@ -19,7 +24,12 @@ def iter_grid_neighbors(grid, r, c):
                 continue
             if nc < 0 or nc >= len(grid[nr]):
                 continue
-            yield grid[nr][nc]
+            yield (nr, nc), grid[nr][nc]
+
+
+def iter_grid_neighbors(grid, r, c):
+    for _, n in iter_grid_neighbors_with_pos(grid, r, c):
+        yield n
 
 
 def parse_grid_digits(grid):
