@@ -22,7 +22,7 @@ def part_a(filename):
             win, act = nums.split(" | ")
 
             win = set(map(lambda x: int(x), win.split()))
-            act = list(map(lambda x: int(x), win.split()))
+            act = list(map(lambda x: int(x), act.split()))
 
             m = 0
             for a in act:
