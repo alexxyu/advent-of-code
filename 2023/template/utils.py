@@ -32,6 +32,11 @@ def iter_grid_neighbors(grid, r, c):
         yield n
 
 
+def parse_list_nums(line, sep=None):
+    line_split = line.split() if sep is None else line.split(sep)
+    return list(map(int, line_split))
+
+
 def parse_grid_digits(grid):
     return [[int(c) for c in r] for r in grid]
 
