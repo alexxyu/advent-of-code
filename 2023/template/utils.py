@@ -1,6 +1,52 @@
 import os
 import requests
 import subprocess
+from enum import Enum
+from dataclasses import dataclass
+
+
+@dataclass(frozen=True)
+class Position2D:
+    row: int
+    column: int
+
+    def __neg__(self):
+        return Position2D(-self.row, -self.column)
+
+    def __add__(self, other):
+        r0, c0 = self.row, self.column
+        r1, c1 = other.row, other.column
+        return Position2D(r0+r1, c0+c1)
+
+    def __sub__(self, other):
+        return self + (-other)
+
+
+class Direction(Enum):
+    LEFT = Position2D(0, -1)
+    RIGHT = Position2D(0, 1)
+    UP = Position2D(-1, 0)
+    DOWN = Position2D(1, 0)
+
+    def rot90(direction, k=1):
+        if k == 0:
+            return direction
+
+        k %= 4
+        match direction:
+            case Direction.LEFT:
+                return Direction.rot90(Direction.UP, k-1)
+            case Direction.UP:
+                return Direction.rot90(Direction.RIGHT, k-1)
+            case Direction.RIGHT:
+                return Direction.rot90(Direction.DOWN, k-1)
+            case Direction.DOWN:
+                return Direction.rot90(Direction.LEFT, k-1)
+            case _:
+                raise ValueError("invalid direction provided")
+
+
+print_grid = lambda grid: [print(''.join(r)) for r in grid]
 
 
 def iter_grid_with_pos(grid):
