@@ -8,15 +8,26 @@ from dataclasses import dataclass
 @dataclass(frozen=True)
 class Position2D:
     row: int
-    column: int
+    col: int
+
+    def is_inside_grid(grid, pos):
+        r, c = pos.row, pos.col
+        return r >= 0 and c >= 0 and r < len(grid) and c < len(grid[r])
 
     def __neg__(self):
-        return Position2D(-self.row, -self.column)
+        return Position2D(-self.row, -self.col)
 
     def __add__(self, other):
-        r0, c0 = self.row, self.column
-        r1, c1 = other.row, other.column
+        p0 = self if not isinstance(self, Direction) else self.value
+        r0, c0 = p0.row, p0.col
+
+        p1 = other if not isinstance(other, Direction) else other.value
+        r1, c1 = p1.row, p1.col
+
         return Position2D(r0+r1, c0+c1)
+
+    def __lt__(self, other):
+        return self.col < other.col if self.row == other.row else self.row < other.row
 
     def __sub__(self, other):
         return self + (-other)
@@ -44,6 +55,10 @@ class Direction(Enum):
                 return Direction.rot90(Direction.LEFT, k-1)
             case _:
                 raise ValueError("invalid direction provided")
+
+
+    def __lt__(self, other):
+        return self.value < other.value
 
 
 print_grid = lambda grid: [print(''.join(r)) for r in grid]
