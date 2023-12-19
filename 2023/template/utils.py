@@ -26,6 +26,15 @@ class Position2D:
 
         return Position2D(r0+r1, c0+c1)
 
+    def __mul__(self, other):
+        if isinstance(other, Position2D):
+            return (self.row * other.row + self.col * other.col)
+        elif isinstance(other, int) or isinstance(other, float):
+            return Position2D(self.row * other, self.col * other)
+
+    def __rmul__(self, other):
+        return self * other
+
     def __lt__(self, other):
         return self.col < other.col if self.row == other.row else self.row < other.row
 
