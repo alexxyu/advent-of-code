@@ -15,14 +15,14 @@ import utils
 def part_a(filename):
     print('Trying part a...')
     with open(filename) as f:
-        lines = f.read().splitlines()
+        lines = f.read().strip().splitlines()
         pass
 
 
 def part_b(filename):
     print('Trying part b...')
     with open(filename) as f:
-        lines = f.read().splitlines()
+        lines = f.read().strip().splitlines()
         pass
 
 
