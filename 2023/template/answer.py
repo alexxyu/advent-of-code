@@ -10,6 +10,7 @@ from enum import Enum
 from functools import cmp_to_key, lru_cache, reduce
 from typing import *
 import utils
+from utils import Direction, Position2D
 
 
 def part_a(filename):

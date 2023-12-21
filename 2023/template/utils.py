@@ -10,9 +10,19 @@ class Position2D:
     row: int
     col: int
 
-    def is_inside_grid(grid, pos):
-        r, c = pos.row, pos.col
+    def is_inside_grid(self, grid):
+        r, c = self.row, self.col
         return r >= 0 and c >= 0 and r < len(grid) and c < len(grid[r])
+
+    def iter_neighbors(self, cardinal=True):
+        if cardinal:
+            for d in Direction:
+                yield self + d
+        else:
+            for dr in [-1, 0, 1]:
+                for dc in [-1, 0, 1]:
+                    if dr != 0 or dc != 0:
+                        yield self + Position2D(dr, dc)
 
     def __neg__(self):
         return Position2D(-self.row, -self.col)
@@ -40,6 +50,12 @@ class Position2D:
 
     def __sub__(self, other):
         return self + (-other)
+
+    def __iter__(self):
+        return iter((self.row, self.col))
+
+    def __getitem__(self, index):
+        return (self.row, self.col)[index]
 
 
 class Direction(Enum):
