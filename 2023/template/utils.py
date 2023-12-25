@@ -15,33 +15,30 @@ class Position2D:
         r, c = self.row, self.col
         return r >= 0 and c >= 0 and r < len(grid) and c < len(grid[r])
 
-    def iter_neighbors(self, cardinal=True):
-        if cardinal:
-            for d in Direction:
-                yield self + d
-        else:
-            for dr in [-1, 0, 1]:
-                for dc in [-1, 0, 1]:
-                    if dr != 0 or dc != 0:
-                        yield self + Position2D(dr, dc)
+    def iter_cardinal_neighbors(self):
+        for d in Direction:
+            yield self + d
+
+    def iter_all_neighbors(self):
+        for dr in [-1, 0, 1]:
+            for dc in [-1, 0, 1]:
+                if dr != 0 or dc != 0:
+                    yield self + Position2D(dr, dc)
 
     def __neg__(self):
         return Position2D(-self.row, -self.col)
 
     def __add__(self, other):
-        p0 = self if not isinstance(self, Direction) else self.value
-        r0, c0 = p0.row, p0.col
-
-        p1 = other if not isinstance(other, Direction) else other.value
-        r1, c1 = p1.row, p1.col
-
+        r0, c0 = self if not isinstance(self, Direction) else self.value
+        r1, c1 = other if not isinstance(other, Direction) else other.value
         return Position2D(r0 + r1, c0 + c1)
 
     def __mul__(self, other):
-        if isinstance(other, Position2D):
-            return self.row * other.row + self.col * other.col
-        elif isinstance(other, int) or isinstance(other, float):
+        if isinstance(other, float | int):
             return Position2D(self.row * other, self.col * other)
+        r0, c0 = self if not isinstance(self, Direction) else self.value
+        r1, c1 = other if not isinstance(other, Direction) else other.value
+        return Position2D(r0 * r1, c0 * c1)
 
     def __rmul__(self, other):
         return self * other
@@ -60,27 +57,40 @@ class Position2D:
 
 
 class Direction(Enum):
-    LEFT = Position2D(0, -1)
     RIGHT = Position2D(0, 1)
     UP = Position2D(-1, 0)
+    LEFT = Position2D(0, -1)
     DOWN = Position2D(1, 0)
 
-    def rot90(direction, k=1):
+    def rot90(self, k=1):
         if k == 0:
-            return direction
+            return self
 
         k %= 4
-        match direction:
+        match self:
             case Direction.LEFT:
-                return Direction.rot90(Direction.UP, k - 1)
+                return Direction.UP.rot90(k - 1)
             case Direction.UP:
-                return Direction.rot90(Direction.RIGHT, k - 1)
+                return Direction.RIGHT.rot90(k - 1)
             case Direction.RIGHT:
-                return Direction.rot90(Direction.DOWN, k - 1)
+                return Direction.DOWN.rot90(k - 1)
             case Direction.DOWN:
-                return Direction.rot90(Direction.LEFT, k - 1)
+                return Direction.LEFT.rot90(k - 1)
             case _:
-                raise ValueError("invalid direction provided")
+                msg = "Invalid direction provided"
+                raise ValueError(msg)
+
+    def __neg__(self):
+        return -self.value
+
+    def __pos__(self):
+        return self.value
+
+    def __add__(self, other):
+        return self.value + other
+
+    def __sub__(self, other):
+        return self + (-other)
 
     def __lt__(self, other):
         return self.value < other.value
@@ -131,7 +141,7 @@ def parse_grid_digits(grid):
 def ans(response):
     # Note: this is a MacOS-specific implementation to copy to clipboard
     print(response)
-    subprocess.run("pbcopy", text=True, input=str(response).strip())
+    subprocess.run("/usr/bin/pbcopy", text=True, input=str(response).strip(), check=False)
 
 
 def get_real_input(day, year=2023):
@@ -152,9 +162,8 @@ def get_real_input(day, year=2023):
     response = requests.get(url, headers=headers, timeout=5)
 
     if response.status_code != 200:
-        raise ValueError(
-            f"Got non-ok response from Advent of Code: {response.status_code} {response.reason}."
-        )
+        msg = f"Got non-ok response from Advent of Code: {response.status_code} {response.reason}."
+        raise ValueError(msg)
 
     os.makedirs(os.path.dirname(filepath), exist_ok=True)
     with open(filepath, "w") as f:

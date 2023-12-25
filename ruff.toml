@@ -16,6 +16,7 @@ ignore = [
     "DJ",  # django
     "ERA", # eradicate
     "EXE", # flake8-executable
+    "PTH", # flake8-use-pathlib
     "T10", # debugger
     "TID", # flake8-tidy-imports
 
@@ -24,9 +25,9 @@ ignore = [
     "E501",    # line too long (auto-fix not currently supported)
     "N806",    # no non-lowercase variables in functions
     "S101",    # no assert statements in prod
+    "S603",    # start subprocess with shell
     "T201",    # no print statements in prod
     "INP001",  # implicit namespace
-    "PTH123",  # use pathlib open
     "SIM108",  # use ternary operator instead of if-else
     "TRY003",  # external messages in exceptions are too verbose
     "PERF401", # manual list comprehension
