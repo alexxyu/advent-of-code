@@ -1,16 +1,7 @@
 import argparse
-import heapq
-import itertools
-import math
-import re
-from collections import *
-from copy import deepcopy
-from dataclasses import dataclass
 from enum import Enum
-from functools import cmp_to_key, lru_cache, reduce
-from typing import *
-import utils
 
+import utils
 from matplotlib.path import Path
 
 
@@ -22,61 +13,61 @@ class Direction(Enum):
 
 
 PIPES = {
-    Direction.UP: ['|', '7', 'F'],
-    Direction.DOWN: ['|', 'J', 'L'],
-    Direction.RIGHT: ['-', '7', 'J'],
-    Direction.LEFT: ['-', 'F', 'L']
+    Direction.UP: ["|", "7", "F"],
+    Direction.DOWN: ["|", "J", "L"],
+    Direction.RIGHT: ["-", "7", "J"],
+    Direction.LEFT: ["-", "F", "L"],
 }
 
 
 NEXT_DIRECTION = {
     Direction.LEFT: {
-        '-': Direction.LEFT,
-        'F': Direction.DOWN,
-        'L': Direction.UP,
+        "-": Direction.LEFT,
+        "F": Direction.DOWN,
+        "L": Direction.UP,
     },
     Direction.RIGHT: {
-        '-': Direction.RIGHT,
-        'J': Direction.UP,
-        '7': Direction.DOWN,
+        "-": Direction.RIGHT,
+        "J": Direction.UP,
+        "7": Direction.DOWN,
     },
     Direction.DOWN: {
-        '|': Direction.DOWN,
-        'J': Direction.LEFT,
-        'L': Direction.RIGHT,
+        "|": Direction.DOWN,
+        "J": Direction.LEFT,
+        "L": Direction.RIGHT,
     },
     Direction.UP: {
-        '|': Direction.UP,
-        '7': Direction.LEFT,
-        'F': Direction.RIGHT,
-    }
+        "|": Direction.UP,
+        "7": Direction.LEFT,
+        "F": Direction.RIGHT,
+    },
 }
 
 
 def part_a(filename):
-    print('Trying part a...')
+    print("Trying part a...")
     with open(filename) as f:
         lines = f.read().splitlines()
         start = None
         for i in range(len(lines)):
             for j in range(len(lines[i])):
-                if lines[i][j] == 'S':
+                if lines[i][j] == "S":
                     start = (i, j)
 
         loop = [start]
         next_pos, next_dir = None, None
-        for dir in Direction:
-            dr, dc = dir.value
-            np = (start[0]+dr, start[1]+dc)
-            if lines[np[0]][np[1]] in PIPES[dir]:
+        for d in Direction:
+            dr, dc = d.value
+            np = (start[0] + dr, start[1] + dc)
+            if lines[np[0]][np[1]] in PIPES[d]:
                 next_pos = np
-                next_dir = dir
+                next_dir = d
                 break
 
         loop.append(next_pos)
         while next_pos != start:
             nd = NEXT_DIRECTION[next_dir][lines[next_pos[0]][next_pos[1]]]
-            np = (next_pos[0]+nd.value[0], next_pos[1]+nd.value[1])
+            np = (next_pos[0] + nd.value[0], next_pos[1] + nd.value[1])
             loop.append(np)
             next_pos, next_dir = np, nd
 
@@ -84,29 +75,29 @@ def part_a(filename):
 
 
 def part_b(filename):
-    print('Trying part b...')
+    print("Trying part b...")
     with open(filename) as f:
         lines = f.read().splitlines()
         start = None
         for i in range(len(lines)):
             for j in range(len(lines[i])):
-                if lines[i][j] == 'S':
+                if lines[i][j] == "S":
                     start = (i, j)
 
         loop = [start]
         next_pos, next_dir = None, None
-        for dir in Direction:
-            dr, dc = dir.value
-            np = (start[0]+dr, start[1]+dc)
-            if lines[np[0]][np[1]] in PIPES[dir]:
+        for d in Direction:
+            dr, dc = d.value
+            np = (start[0] + dr, start[1] + dc)
+            if lines[np[0]][np[1]] in PIPES[d]:
                 next_pos = np
-                next_dir = dir
+                next_dir = d
                 break
 
         loop.append(next_pos)
         while next_pos != start:
             nd = NEXT_DIRECTION[next_dir][lines[next_pos[0]][next_pos[1]]]
-            np = (next_pos[0]+nd.value[0], next_pos[1]+nd.value[1])
+            np = (next_pos[0] + nd.value[0], next_pos[1] + nd.value[1])
             loop.append(np)
             next_pos, next_dir = np, nd
 
@@ -124,18 +115,24 @@ def part_b(filename):
 
 
 def visualize_grid(grid, loop, enclosed):
-    g = [['.' for _ in range(len(grid[0]))] for _ in range(len(grid))]
+    g = [["." for _ in range(len(grid[0]))] for _ in range(len(grid))]
     for p in loop:
-        g[p[0]][p[1]] = '*'
+        g[p[0]][p[1]] = "*"
     for e in enclosed:
-        g[e[0]][e[1]] = 'I'
+        g[e[0]][e[1]] = "I"
     for r in g:
-        print(''.join(r))
+        print("".join(r))
 
 
 parser = argparse.ArgumentParser()
-parser.add_argument('filename', help='the input file, will default to actual AoC input if omitted', type=str, nargs='?', default=None)
-parser.add_argument('--skip-b', help='skip running part b', action='store_true')
+parser.add_argument(
+    "filename",
+    help="the input file, will default to actual AoC input if omitted",
+    type=str,
+    nargs="?",
+    default=None,
+)
+parser.add_argument("--skip-b", help="skip running part b", action="store_true")
 args = parser.parse_args()
 
 filename = args.filename

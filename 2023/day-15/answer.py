@@ -1,18 +1,9 @@
 import argparse
-import heapq
-import itertools
-import math
-import re
-from collections import *
-from copy import deepcopy
-from dataclasses import dataclass
-from enum import Enum
-from functools import cmp_to_key, lru_cache, reduce
-from typing import *
+
 import utils
 
 
-def hash(word):
+def hash_word(word):
     h = 0
     for c in word:
         h += ord(c)
@@ -20,24 +11,25 @@ def hash(word):
         h %= 256
     return h
 
+
 def part_a(filename):
-    print('Trying part a...')
+    print("Trying part a...")
     with open(filename) as f:
         seq = f.read().splitlines()[0]
-        s = sum(hash(word) for word in seq.split(','))
+        s = sum(hash_word(word) for word in seq.split(","))
         print(s)
 
 
 def part_b(filename):
-    print('Trying part b...')
+    print("Trying part b...")
     with open(filename) as f:
         seq = f.read().splitlines()[0]
         boxes = [[] for _ in range(256)]
         lenses = set()
-        for word in seq.split(','):
-            if '='in word:
-                label = word[:word.index('=')]
-                h = hash(label)
+        for word in seq.split(","):
+            if "=" in word:
+                label = word[: word.index("=")]
+                h = hash_word(label)
                 fp = int(word[-1])
 
                 if label in lenses:
@@ -51,26 +43,32 @@ def part_b(filename):
                     lenses.add(label)
             else:
                 label = word[:-1]
-                h = hash(label)
+                h = hash_word(label)
                 box = boxes[h]
 
                 for i, (b, _) in enumerate(box):
                     if b == label:
-                        boxes[h] = box[:i] + box[i+1:]
+                        boxes[h] = box[:i] + box[i + 1:]
                         lenses.remove(b)
                         break
 
         s = 0
         for i, box in enumerate(boxes):
             for j, (_, fp) in enumerate(box):
-                s += (i+1) * (j+1) * fp
+                s += (i + 1) * (j + 1) * fp
 
         print(s)
 
 
 parser = argparse.ArgumentParser()
-parser.add_argument('filename', help='the input file, will default to actual AoC input if omitted', type=str, nargs='?', default=None)
-parser.add_argument('--skip-b', help='skip running part b', action='store_true')
+parser.add_argument(
+    "filename",
+    help="the input file, will default to actual AoC input if omitted",
+    type=str,
+    nargs="?",
+    default=None,
+)
+parser.add_argument("--skip-b", help="skip running part b", action="store_true")
 args = parser.parse_args()
 
 filename = args.filename

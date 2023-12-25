@@ -1,17 +1,7 @@
 import argparse
-from decimal import DivisionByZero
-import heapq
 import itertools
-import math
-import re
-from collections import *
-from copy import deepcopy
-from dataclasses import dataclass
-from enum import Enum
-from functools import cmp_to_key, lru_cache, reduce
-from typing import *
+
 import utils
-from utils import Direction, Position2D
 from sympy import Symbol, solve_poly_system
 
 
@@ -38,18 +28,18 @@ MAX_VAL = 400000000000000
 
 
 def part_a(filename):
-    print('Trying part a...')
+    print("Trying part a...")
     with open(filename) as f:
         lines = f.read().strip().splitlines()
         stones = []
         for line in lines:
-            pos, vel = line.split(' @ ')
-            pos = tuple(utils.parse_list_nums(pos, ', '))[:2]
-            vel = tuple(utils.parse_list_nums(vel, ', '))[:2]
+            pos, vel = line.split(" @ ")
+            pos = tuple(utils.parse_list_nums(pos, ", "))[:2]
+            vel = tuple(utils.parse_list_nums(vel, ", "))[:2]
             stones.append((pos, vel))
 
         in_test_area = 0
-        for ((p1, v1), (p2, v2)) in itertools.combinations(stones, 2):
+        for (p1, v1), (p2, v2) in itertools.combinations(stones, 2):
             p = intersect(p1, v1, p2, v2)
             if p and all(c >= MIN_VAL and c <= MAX_VAL for c in p):
                 in_test_area += 1
@@ -58,16 +48,16 @@ def part_a(filename):
 
 
 def part_b(filename):
-    print('Trying part b...')
+    print("Trying part b...")
     with open(filename) as f:
         lines = f.read().strip().splitlines()
 
-        xm = Symbol('xm')
-        ym = Symbol('ym')
-        zm = Symbol('zm')
-        vxm = Symbol('vxm')
-        vym = Symbol('vym')
-        vzm = Symbol('vzm')
+        xm = Symbol("xm")
+        ym = Symbol("ym")
+        zm = Symbol("zm")
+        vxm = Symbol("vxm")
+        vym = Symbol("vym")
+        vzm = Symbol("vzm")
 
         equations = []
         symbols = [xm, ym, zm, vxm, vym, vzm]
@@ -76,11 +66,11 @@ def part_b(filename):
         # provided, where x is the number of hailstones we look at. That means that we just need
         # x=3 hailstones to get 9 equations for 9 unknowns.
         for i, line in enumerate(lines[:3]):
-            pos, vel = line.split(' @ ')
-            x0, y0, z0 = tuple(utils.parse_list_nums(pos, ', '))
-            vx, vy, vz = tuple(utils.parse_list_nums(vel, ', '))
+            pos, vel = line.split(" @ ")
+            x0, y0, z0 = tuple(utils.parse_list_nums(pos, ", "))
+            vx, vy, vz = tuple(utils.parse_list_nums(vel, ", "))
 
-            t = Symbol(f't{i}')
+            t = Symbol(f"t{i}")
 
             # xm + vxm*t = x0 + vx*t
             xt = vx * t + x0 - (xm + vxm * t)
@@ -96,8 +86,14 @@ def part_b(filename):
 
 
 parser = argparse.ArgumentParser()
-parser.add_argument('filename', help='the input file, will default to actual AoC input if omitted', type=str, nargs='?', default=None)
-parser.add_argument('--skip-b', help='skip running part b', action='store_true')
+parser.add_argument(
+    "filename",
+    help="the input file, will default to actual AoC input if omitted",
+    type=str,
+    nargs="?",
+    default=None,
+)
+parser.add_argument("--skip-b", help="skip running part b", action="store_true")
 args = parser.parse_args()
 
 filename = args.filename

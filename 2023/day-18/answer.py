@@ -1,34 +1,23 @@
 import argparse
-import heapq
-import itertools
-import math
-import re
-from collections import *
-from copy import deepcopy
-from dataclasses import dataclass
-from enum import Enum
-from functools import cmp_to_key, lru_cache, reduce
-from typing import *
-import utils
-from utils import Direction, Position2D
-from shapely.geometry import Polygon
 
+import utils
+from shapely.geometry import Polygon
+from utils import Direction, Position2D
 
 DIRECTIONS = {
-    'R': Direction.RIGHT,
-    'D': Direction.DOWN,
-    'L': Direction.LEFT,
-    'U': Direction.UP,
-
-    '0': Direction.RIGHT,
-    '1': Direction.DOWN,
-    '2': Direction.LEFT,
-    '3': Direction.UP,
+    "R": Direction.RIGHT,
+    "D": Direction.DOWN,
+    "L": Direction.LEFT,
+    "U": Direction.UP,
+    "0": Direction.RIGHT,
+    "1": Direction.DOWN,
+    "2": Direction.LEFT,
+    "3": Direction.UP,
 }
 
 
 def part_a(filename):
-    print('Trying part a...')
+    print("Trying part a...")
     with open(filename) as f:
         lines = f.read().splitlines()
         curr_pos = Position2D(0, 0)
@@ -58,12 +47,12 @@ def part_a(filename):
 
         A = p.area
         b = p.length
-        i = A - b//2 + 1
+        i = A - b // 2 + 1
         print(b + i)
 
 
 def part_b(filename):
-    print('Trying part b...')
+    print("Trying part b...")
     with open(filename) as f:
         lines = f.read().splitlines()
         curr_pos = Position2D(0, 0)
@@ -85,13 +74,19 @@ def part_b(filename):
         p = Polygon(vertices)
         A = p.area
         b = p.length
-        i = A - b//2 + 1
+        i = A - b // 2 + 1
         print(b + i)
 
 
 parser = argparse.ArgumentParser()
-parser.add_argument('filename', help='the input file, will default to actual AoC input if omitted', type=str, nargs='?', default=None)
-parser.add_argument('--skip-b', help='skip running part b', action='store_true')
+parser.add_argument(
+    "filename",
+    help="the input file, will default to actual AoC input if omitted",
+    type=str,
+    nargs="?",
+    default=None,
+)
+parser.add_argument("--skip-b", help="skip running part b", action="store_true")
 args = parser.parse_args()
 
 filename = args.filename

@@ -1,0 +1,36 @@
+line-length = 120
+indent-width = 4
+
+target-version = "py311"
+
+select = [
+    "ALL", # include all the rules, including new ones
+]
+
+ignore = [
+    #### modules
+    "D",   # pydocstyle
+    "ANN", # flake8-annotations
+    "COM", # flake8-commas
+    "C90", # mccabe complexity
+    "DJ",  # django
+    "ERA", # eradicate
+    "EXE", # flake8-executable
+    "T10", # debugger
+    "TID", # flake8-tidy-imports
+
+    #### specific rules
+    "E402",    # false positives for local imports
+    "E501",    # line too long (auto-fix not currently supported)
+    "N806",    # no non-lowercase variables in functions
+    "S101",    # no assert statements in prod
+    "T201",    # no print statements in prod
+    "INP001",  # implicit namespace
+    "PTH123",  # use pathlib open
+    "SIM108",  # use ternary operator instead of if-else
+    "TRY003",  # external messages in exceptions are too verbose
+    "PERF401", # manual list comprehension
+    "PLR1714", # rewrite repeated equality as membership
+    "PLR2004", # no magic numbers
+    "PLR0911", # too many return statements
+]

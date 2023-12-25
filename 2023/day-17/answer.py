@@ -1,33 +1,26 @@
 import argparse
 import heapq
-import itertools
-import math
-import re
-from collections import *
-from copy import deepcopy
-from dataclasses import dataclass
-from enum import Enum
-from functools import cmp_to_key, lru_cache, reduce
-from typing import *
+from collections import defaultdict
+
 import utils
 from utils import Direction, Position2D
 
 
 def solve(grid, a, b):
-    memo = defaultdict(lambda: float('inf'))
+    memo = defaultdict(lambda: float("inf"))
     seen = set()
     q = [(0, Position2D(0, 0), Direction.DOWN), (0, Position2D(0, 0), Direction.RIGHT)]
 
     while q:
         s, p, d = heapq.heappop(q)
-        if p.row == len(grid)-1 and p.col == len(grid[-1])-1:
+        if p.row == len(grid) - 1 and p.col == len(grid[-1]) - 1:
             return s
         if (p, d) in seen:
             continue
         seen.add((p, d))
 
         np, ns = p, s
-        for step in range(1, b+1):
+        for step in range(1, b + 1):
             np += d
             if not Position2D.is_inside_grid(grid, np):
                 break
@@ -43,7 +36,7 @@ def solve(grid, a, b):
 
 
 def part_a(filename):
-    print('Trying part a...')
+    print("Trying part a...")
     with open(filename) as f:
         lines = f.read().splitlines()
         grid = utils.parse_grid_digits(lines)
@@ -51,7 +44,7 @@ def part_a(filename):
 
 
 def part_b(filename):
-    print('Trying part b...')
+    print("Trying part b...")
     with open(filename) as f:
         lines = f.read().splitlines()
         grid = utils.parse_grid_digits(lines)
@@ -59,8 +52,14 @@ def part_b(filename):
 
 
 parser = argparse.ArgumentParser()
-parser.add_argument('filename', help='the input file, will default to actual AoC input if omitted', type=str, nargs='?', default=None)
-parser.add_argument('--skip-b', help='skip running part b', action='store_true')
+parser.add_argument(
+    "filename",
+    help="the input file, will default to actual AoC input if omitted",
+    type=str,
+    nargs="?",
+    default=None,
+)
+parser.add_argument("--skip-b", help="skip running part b", action="store_true")
 args = parser.parse_args()
 
 filename = args.filename

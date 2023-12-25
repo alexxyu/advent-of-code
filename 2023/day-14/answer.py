@@ -1,33 +1,25 @@
 import argparse
-import heapq
-import itertools
-import math
-import re
-from collections import *
-from copy import deepcopy
-from dataclasses import dataclass
-from enum import Enum
-from functools import cmp_to_key, lru_cache, reduce
-from typing import *
-import utils
+from functools import lru_cache
+
 import numpy as np
+import utils
 
 
 def part_a(filename):
-    print('Trying part a...')
+    print("Trying part a...")
     with open(filename) as f:
         lines = f.read().strip().splitlines()
-        grid = [[c for c in line] for line in lines]
+        grid = [list(line) for line in lines]
         s = 0
         for c in range(len(grid[0])):
             for i, row in enumerate(grid):
-                if row[c] == 'O':
+                if row[c] == "O":
                     r = i
-                    while r > 0 and grid[r-1][c] == '.':
+                    while r > 0 and grid[r - 1][c] == ".":
                         r -= 1
-                    grid[i][c] = '.'
-                    grid[r][c] = 'O'
-                    s += (len(grid) - r)
+                    grid[i][c] = "."
+                    grid[r][c] = "O"
+                    s += len(grid) - r
         print(s)
 
 
@@ -37,14 +29,15 @@ def cycle(grid):
         arrayed = np.array(g)
         for c in range(len(arrayed[0])):
             for i, row in enumerate(arrayed):
-                if row[c] == 'O':
+                if row[c] == "O":
                     r = i
-                    while r > 0 and arrayed[r-1][c] == '.':
+                    while r > 0 and arrayed[r - 1][c] == ".":
                         r -= 1
-                    arrayed[i][c] = '.'
-                    arrayed[r][c] = 'O'
+                    arrayed[i][c] = "."
+                    arrayed[r][c] = "O"
         rotated = np.rot90(arrayed, k=-1)
-        return tuple((tuple(r) for r in rotated))
+        return tuple(tuple(r) for r in rotated)
+
     return move(move(move(move(grid))))
 
 
@@ -52,7 +45,7 @@ memo = {}
 
 
 def part_b(filename):
-    print('Trying part b...')
+    print("Trying part b...")
     with open(filename) as f:
         lines = f.read().strip().splitlines()
         grid = tuple(tuple(c for c in line) for line in lines)
@@ -72,14 +65,20 @@ def part_b(filename):
         s = 0
         for i, row in enumerate(grid):
             for c in row:
-                if c == 'O':
-                    s += (len(grid) - i)
+                if c == "O":
+                    s += len(grid) - i
         print(s)
 
 
 parser = argparse.ArgumentParser()
-parser.add_argument('filename', help='the input file, will default to actual AoC input if omitted', type=str, nargs='?', default=None)
-parser.add_argument('--skip-b', help='skip running part b', action='store_true')
+parser.add_argument(
+    "filename",
+    help="the input file, will default to actual AoC input if omitted",
+    type=str,
+    nargs="?",
+    default=None,
+)
+parser.add_argument("--skip-b", help="skip running part b", action="store_true")
 args = parser.parse_args()
 
 filename = args.filename

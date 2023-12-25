@@ -1,19 +1,10 @@
 import argparse
-import heapq
-import itertools
-import math
-import re
-from collections import *
-from copy import deepcopy
-from dataclasses import dataclass
-from enum import Enum
-from functools import cmp_to_key, lru_cache, reduce
-from typing import *
+
 import utils
 
 
 def part_a(filename):
-    print('Trying part a...')
+    print("Trying part a...")
     with open(filename) as f:
         sections = f.read().strip().split("\n\n")
         seeds = utils.parse_list_nums(sections[0].split(": ")[1])
@@ -24,7 +15,7 @@ def part_a(filename):
             lines = s.split("\n")
             for line in lines[1:]:
                 dst, src, rng = utils.parse_list_nums(line)
-                mapping[(src, src+rng)] = dst - src
+                mapping[(src, src + rng)] = dst - src
             mappings.append(mapping)
 
         k = []
@@ -39,14 +30,14 @@ def part_a(filename):
 
 
 def part_b(filename):
-    print('Trying part b...')
+    print("Trying part b...")
     with open(filename) as f:
         parts = f.read().strip().split("\n\n")
         seeds = utils.parse_list_nums(parts[0].split(": ")[1])
 
         ranges = []
-        for (s, t) in zip(seeds[::2], seeds[1::2]):
-            ranges.append([s, s+t-1])
+        for s, t in zip(seeds[::2], seeds[1::2], strict=False):
+            ranges.append([s, s + t - 1])
 
         mappings = []
         for s in parts:
@@ -54,7 +45,7 @@ def part_b(filename):
             lines = s.split("\n")
             for line in lines[1:]:
                 dst, src, rng = utils.parse_list_nums(line)
-                mapping[(src, src+rng-1)] = dst - src
+                mapping[(src, src + rng - 1)] = dst - src
             mappings.append(mapping)
 
         for mapping in mappings:
@@ -78,8 +69,14 @@ def part_b(filename):
 
 
 parser = argparse.ArgumentParser()
-parser.add_argument('filename', help='the input file, will default to actual AoC input if omitted', type=str, nargs='?', default=None)
-parser.add_argument('--skip-b', help='skip running part b', action='store_true')
+parser.add_argument(
+    "filename",
+    help="the input file, will default to actual AoC input if omitted",
+    type=str,
+    nargs="?",
+    default=None,
+)
+parser.add_argument("--skip-b", help="skip running part b", action="store_true")
 args = parser.parse_args()
 
 filename = args.filename

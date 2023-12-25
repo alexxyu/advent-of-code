@@ -1,6 +1,7 @@
 import os
-import requests
 import subprocess
+
+import requests
 
 
 def iter_grid_with_pos(grid):
@@ -39,32 +40,33 @@ def parse_grid_digits(grid):
 def ans(response):
     # Note: this is a MacOS-specific implementation to copy to clipboard
     print(response)
-    subprocess.run('pbcopy', text=True, input=str(response).strip())
+    subprocess.run("pbcopy", text=True, input=str(response).strip())
 
 
 def get_real_input(day, year=2023):
     filepath = os.path.join(
-        os.path.expanduser('~'),
-        '.cache',
-        'advent-of-code',
-        str(year),
-        f'{day}.in')
+        os.path.expanduser("~"), ".cache", "advent-of-code", str(year), f"{day}.in"
+    )
     if os.path.exists(filepath):
         return filepath
 
-    session_cookie = os.environ['ADVENT_OF_CODE_KEY']
+    session_cookie = os.environ["ADVENT_OF_CODE_KEY"]
     if session_cookie is None:
-        print("WARNING: AOC session cookie is not set. Check value of ADVENT_OF_CODE_KEY.")
+        print(
+            "WARNING: AOC session cookie is not set. Check value of ADVENT_OF_CODE_KEY."
+        )
 
-    url = f'https://adventofcode.com/{year}/day/{day}/input'
-    headers = {'Cookie': f'session={session_cookie}'}
-    response = requests.get(url, headers=headers)
+    url = f"https://adventofcode.com/{year}/day/{day}/input"
+    headers = {"Cookie": f"session={session_cookie}"}
+    response = requests.get(url, headers=headers, timeout=5)
 
     if response.status_code != 200:
-        raise ValueError(f"Got non-ok response from Advent of Code: {response.status_code} {response.reason}.")
+        raise ValueError(
+            f"Got non-ok response from Advent of Code: {response.status_code} {response.reason}."
+        )
 
     os.makedirs(os.path.dirname(filepath), exist_ok=True)
-    with open(filepath, 'w') as f:
+    with open(filepath, "w") as f:
         f.write(response.text)
 
     return filepath
