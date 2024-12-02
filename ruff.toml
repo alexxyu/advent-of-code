@@ -23,6 +23,8 @@ ignore = [
     #### specific rules
     "E402",    # false positives for local imports
     "E501",    # line too long (auto-fix not currently supported)
+    "F403",    # no wildcard imports
+    "F405",    # no undefined names
     "N806",    # no non-lowercase variables in functions
     "S101",    # no assert statements in prod
     "S603",    # start subprocess with shell
