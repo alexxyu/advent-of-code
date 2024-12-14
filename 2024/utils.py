@@ -1,4 +1,5 @@
 import os
+import re
 import subprocess
 from dataclasses import dataclass
 from enum import Enum
@@ -132,6 +133,10 @@ def iter_grid_neighbors(grid, r, c):
 def parse_list_nums(line, sep=None):
     line_split = line.split() if sep is None else line.split(sep)
     return list(map(int, line_split))
+
+
+def parse_nums(line):
+    return [int(n) for n in re.findall(r"\d+", line)]
 
 
 def parse_grid_digits(grid):
