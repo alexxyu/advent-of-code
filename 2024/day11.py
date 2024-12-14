@@ -2,7 +2,7 @@ import argparse
 from collections import *
 from typing import *
 
-import utils
+from utils import get_real_input
 
 
 def part_a(filename):
@@ -64,7 +64,7 @@ args = parser.parse_args()
 
 filename = args.filename
 if not args.filename:
-    filename = utils.get_real_input(11)
+    filename = get_real_input(11)
 
 part_a(filename)
 if not args.skip_b:

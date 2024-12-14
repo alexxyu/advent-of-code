@@ -3,8 +3,7 @@ import itertools
 from collections import *
 from typing import *
 
-import utils
-from utils import iter_grid_with_pos
+from utils import get_real_input, iter_grid_with_pos
 
 
 def part_a(filename):
@@ -81,7 +80,7 @@ args = parser.parse_args()
 
 filename = args.filename
 if not args.filename:
-    filename = utils.get_real_input(8)
+    filename = get_real_input(8)
 
 part_a(filename)
 if not args.skip_b:

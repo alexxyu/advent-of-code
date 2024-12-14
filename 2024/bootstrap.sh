@@ -10,15 +10,17 @@ fi
 
 fday=$aoc_day
 if [ $aoc_day -lt 10 ]; then
-    fday="0$aoc_day"
+    fday="0${aoc_day}"
 fi
 
-echo "Creating template for day-$fday"
+echo "Creating template for day-${fday}"
 
-if [[ -d "day-$fday" ]]; then
-    echo "Directory for day-$fday already exists"
+if [[ -d "day-${fday}" ]]; then
+    echo "Directory for day-${fday} already exists"
     exit 1
 fi
 
-cp -r template day-$fday
-grep -rl "{{aoc_day}}" day-$fday | xargs sed -i "" "s/{{aoc_day}}/$aoc_day/g"
+for fname in template/*; do
+    newname=$(echo "$fname" | sed "s/{{aoc_day}}/${aoc_day}/g")
+    cat "$fname" | sed "s/{{aoc_day}}/${aoc_day}/g" > "$(basename $newname)"
+done

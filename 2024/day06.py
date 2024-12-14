@@ -2,8 +2,7 @@ import argparse
 from collections import *
 from typing import *
 
-import utils
-from utils import Direction, Position2D, iter_grid_with_pos
+from utils import Direction, Position2D, get_real_input, iter_grid_with_pos
 
 
 def part_a(filename):
@@ -80,7 +79,7 @@ args = parser.parse_args()
 
 filename = args.filename
 if not args.filename:
-    filename = utils.get_real_input(6)
+    filename = get_real_input(6)
 
 part_a(filename)
 if not args.skip_b:

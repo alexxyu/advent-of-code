@@ -3,8 +3,8 @@ import re
 from collections import *
 from typing import *
 
-import utils
 from sympy import Symbol, solve
+from utils import get_real_input
 
 type Position = Tuple[int, int]
 
@@ -55,7 +55,7 @@ args = parser.parse_args()
 
 filename = args.filename
 if not args.filename:
-    filename = utils.get_real_input(13)
+    filename = get_real_input(13)
 
 part_a(filename)
 if not args.skip_b:
