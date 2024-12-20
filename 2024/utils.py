@@ -101,6 +101,14 @@ def print_grid(grid):
     return [print("".join(r)) for r in grid]
 
 
+def find_grid_pos_with_value(grid, value):
+    positions = []
+    for (r, c), p in iter_grid_with_pos(grid):
+        if p == value:
+            positions.append(Position2D(r, c))
+    return positions
+
+
 def iter_grid_with_pos(grid):
     for i, r in enumerate(grid):
         for j, c in enumerate(r):
