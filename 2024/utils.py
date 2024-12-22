@@ -1,6 +1,8 @@
+import itertools
 import os
 import re
 import subprocess
+from collections import deque
 from dataclasses import dataclass
 from enum import Enum
 
@@ -149,6 +151,14 @@ def parse_nums(line):
 
 def parse_grid_digits(grid):
     return [[int(c) for c in r] for r in grid]
+
+
+def sliding_window(iterable, n):
+    iterator = iter(iterable)
+    window = deque(itertools.islice(iterator, n - 1), maxlen=n)
+    for x in iterator:
+        window.append(x)
+        yield tuple(window)
 
 
 def ans(response):
