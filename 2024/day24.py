@@ -10,6 +10,7 @@ SWAP_PAIRS = [
     ("bjm", "z07"),
     ("z13", "hsw"),
     ("z18", "skf"),
+    ("wkr", "nvr"),
 ]
 
 SWAPS = dict(SWAP_PAIRS) | {b: a for a, b in SWAP_PAIRS}
@@ -114,7 +115,7 @@ def part_b(filename):
         # (see https://dreampuf.github.io/GraphvizOnline) of the given equations, and label any z
         # nodes that are differ from the expected bit. We can then manually inspect the graph to
         # determine the correct pairs of gates to swap one by one.
-        with open("graph.dot", "w") as g:
+        with open("day24.dot", "w") as g:
             g.write("digraph G {\n")
 
             for i in range(mlen):
@@ -131,7 +132,8 @@ def part_b(filename):
 
                 g.write(f'\t"{a}" -> "{res}";\n')
                 g.write(f'\t"{b}" -> "{res}";\n')
-                g.write(f'\t"{res}" [shape="diamond", label="{op}"];\n')
+                color = "red" if rhs.startswith("z") and op != "XOR" else "black"
+                g.write(f'\t"{res}" [shape="diamond",label="{op}",color="{color}"];\n')
                 g.write(f'\t"{res}" -> "{rhs}";\n')
 
             g.write("}")
